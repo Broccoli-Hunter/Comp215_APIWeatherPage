@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--CSS-->
+    <link rel="stylesheet" href="assets/weather.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
+        crossorigin="anonymous"> <!-- 'CSS' section from Bootstrap-->
+
+    <!--JavaScript-->
+    <script src="assets/weather.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
+        crossorigin="anonymous"></script> <!-- 'JS Bundle' - Bootstrap-->
+
+    <title>Laura's COMP 215 Weather Dashboard</title>
+</head>
+<body>
+    <div class="container-fluid" id="mainContainer">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 border">
+                <div id="header">                            
+                    <h1>Weather Dashboard:</h1>
+                    <form class="form-inline"> 
+                        <div class="form-group">
+                            <label for="dateField"><h2>Date:</h2></label>
+                            <input type="text" class="form-control" id="dateField" value="" disabled>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" id="CelsiusRadio" name="radOpts" checked onchange="processForm()"> Celsius</label>
+                            <label><input type="radio" id="FahrenheitRadio" name="radOpts" onchange="processForm()" > Fahrenheit</label>
+                        </div>
+                    </form>
+                </div>
+                    
+            </div>
+        </div><!--end row 1  -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 border" id="city1Col">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="city1Name">City 1:</label>
+                        <input type="text" class="form-control" id="city1Name" tabindex="-1" onfocusout="processCity1()">
+                        <!--onfocusout used to trigger call to API - https://www.w3schools.com/jsref/event_onfocusout.asp because then it makes-->
+                            <!-- the call when the user is finished typing-->
+                        <!--tabindex negative stops user from being able to tab into another field, which was making more calls to API-->
+                            <!--which is more noticable when a city isn't found and the alert shows up twice-->
+                            <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex -->
+                    </div>
+                    <div class="form-group">
+                        <label for="city1Code">Country Code:</label>
+                        <input type="text" class="form-control" id="city1Code" tabindex="-1"  onfocusout="processCity1()">
+                    </div>
+                </form>
+                <br/>
+                <table id="table1">
+                    <tr>
+                        <td class = "title">
+                            Current Weather: 
+                        </td> 
+                        <td id="city1CurrentTime" class="time">
+                            Time
+                        </td>
+                    </tr><!----City 1 Current Weather: Time -->
+                    <tr>
+                        <td rowspan="3" >
+                            <img src="" id="city1CurrentIcon"/>
+                        </td>  
+                        <td id="city1CurrentTemp">
+                            Temp
+                        </td>
+                    </tr><!--Pic / Pressure -->
+                    <tr>            
+                        <td id="city1CurrentWind">
+                            Wind
+                        </td>
+                    </tr><!--Pic / Wind -->
+                    <tr>            
+                        <td id="city1CurrentPressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp -->
+                    <tr>            
+                        <td id="city1CurrentDesc">
+                            Description
+                        </td>
+                    </tr><!--Desc-->
+                    <tr>            
+                        <td id="city1Sunrise">
+                            Sunrise
+                        </td>
+                        <td id="city1Latitude">
+                            Lat
+                        </td>
+                    </tr><!--Sunrise / Lat -->
+                    <tr>            
+                        <td id="city1Sunset">
+                            Sunset
+                        </td>
+                        <td id="city1Longitude"> 
+                            Long
+                        </td>
+                    </tr><!--Sunset / Long -->
+                    <tr>   
+                        <td colspan="2" class="title">         
+                            <br/>Hourly Weather
+                        </td>
+                    </tr><!-----Hourly Weather  -->
+                    <tr>            
+                        <td rowspan="3">
+                            <img src="" id="city1Hour1Pic"/>
+                        </td>
+                        <td id="city1Hour1Time" class="time">
+                            Time
+                        </td>
+                    </tr><!--1. Pic / Time -->
+                    <tr>  
+                        <td id="city1Hour1Temp">
+                            Temp
+                        </td>          
+                        
+                    </tr><!--Pic / POP -->
+                    <tr>
+                        <td id="city1Hour1Wind">
+                            Wind
+                        </td>
+                    </tr>
+                    <tr>    
+                        <td id="city1Hour1Description">
+                            description
+                        </td>        
+                        
+                        <td id="city1Hour1Pressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp / Pressure-->
+                    <tr>            
+                        <td id= "city1Hour1POP">
+                            POP
+                        </td>
+                        
+                    </tr><!--Desc / Wind-->
+                    <br/>
+                    <tr>            
+                        <td rowspan="3" >
+                            <img src="" id="city1Hour2Pic"/>
+                        </td>
+                        <td id="city1Hour2Time" class="time">
+                            Time
+                        </td>
+                    </tr><!--1. Pic / Time -->
+                    <tr>  
+                        <td id="city1Hour2Temp">
+                            Temp
+                        </td>          
+                        
+                    </tr><!--Pic / POP -->
+                    <tr>
+                        <td id="city1Hour2Wind">
+                            Wind
+                        </td>
+                    </tr>
+                    <tr>  
+                        <td id="city1Hour2Description">
+                            description
+                        </td>          
+                        
+                        <td id="city1Hour2Pressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp / Pressure-->
+                    <tr>            
+                        <td id="city1Hour2POP">
+                            POP
+                        </td>
+                        
+                    </tr><!--Desc / Wind-->
+                    <br/>
+                    <tr>            
+                        <td rowspan="3" >
+                            <img src="" id="city1Hour3Pic"/>
+                        </td>
+                        <td id="city1Hour3Time" class="time">
+                            Time
+                        </td>
+                    </tr><!--1. Pic / Time -->
+                    <tr>   
+                        <td id="city1Hour3Temp">
+                            Temp
+                        </td>         
+                        
+                    </tr><!--Pic / POP -->
+                    <tr>
+                        <td id="city1Hour3Wind">
+                            Wind
+                        </td>
+                    </tr>
+                    <tr> 
+                        <td id="city1Hour3Description">
+                            description
+                        </td>           
+                        
+                        <td id="city1Hour3Pressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp / Pressure-->
+                    <tr>            
+                        <td id="city1Hour3POP">
+                            POP
+                        </td>
+                        
+                    </tr><!--Desc / Wind-->
+                    
+                </table>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 border" id="city2Col">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="city2Name">City 2:</label>
+                        <input type="text" class="form-control" id="city2Name" tabindex="-1" onfocusout="processCity2()">
+                    </div>
+                    <div class="form-group">
+                        <label for="city2Code">Country Code:</label>
+                        <input type="text" class="form-control" id="city2Code" tabindex="-1" onfocusout="processCity2()">
+                    </div>
+                </form>
+                <br/>
+                <table id="table2">
+                    <tr>
+                        <td class = "title">
+                            Current Weather: 
+                        </td> 
+                        <td id="city2CurrentTime" class="time">
+                            Time
+                        </td>
+                    </tr><!----City 1 Current Weather: Time -->
+                    <tr>
+                        <td rowspan="3" >
+                            <img src="" id="city2CurrentIcon"/>
+                        </td>  
+                        <td id="city2CurrentTemp">
+                            Temp
+                        </td>
+                    </tr><!--Pic / Pressure -->
+                    <tr>            
+                        <td id="city2CurrentWind">
+                            Wind
+                        </td>
+                    </tr><!--Pic / Wind -->
+                    <tr>            
+                        <td id="city2CurrentPressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp -->
+                    <tr>            
+                        <td id="city2CurrentDesc">
+                            Description
+                        </td>
+                    </tr><!--Desc-->
+                    <tr>            
+                        <td id="city2Sunrise">
+                            Sunrise
+                        </td>
+                        <td id="city2Latitude">
+                            Lat
+                        </td>
+                    </tr><!--Sunrise / Lat -->
+                    <tr>            
+                        <td id="city2Sunset">
+                            Sunset
+                        </td>
+                        <td id="city2Longitude"> 
+                            Long
+                        </td>    
+                    </tr><!--Sunset / Long -->
+                    
+                    <tr>   
+                        <td colspan="2" class="title">         
+                            <br/>Hourly Weather
+                        </td>
+                    </tr><!-----Hourly Weather  -->
+                    <tr>            
+                        <td rowspan="3">
+                            <img src="" id="city2Hour1Pic"/>
+                        </td>
+                        <td id="city2Hour1Time" class="time">
+                            Time
+                        </td>
+                    </tr><!--1. Pic / Time -->
+                    <tr>  
+                        <td id="city2Hour1Temp">
+                            Temp
+                        </td>          
+                        
+                    </tr><!--Pic / POP -->
+                    <tr>
+                        <td id="city2Hour1Wind">
+                            Wind
+                        </td>
+                    </tr>
+                    <tr>    
+                        <td id="city2Hour1Description">
+                            description
+                        </td>        
+                        
+                        <td id="city2Hour1Pressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp / Pressure-->
+                    <tr>            
+                        <td id= "city2Hour1POP">
+                            POP
+                        </td>
+                        
+                    </tr><!--Desc / Wind-->
+                    <br/>
+                    <tr>            
+                        <td rowspan="3" >
+                            <img src="" id="city2Hour2Pic"/>
+                        </td>
+                        <td id="city2Hour2Time" class="time">
+                            Time
+                        </td>
+                    </tr><!--1. Pic / Time -->
+                    <tr>  
+                        <td id="city2Hour2Temp">
+                            Temp
+                        </td>          
+                        
+                    </tr><!--Pic / POP -->
+                    <tr>
+                        <td id="city2Hour2Wind">
+                            Wind
+                        </td>
+                    </tr>
+                    <tr>  
+                        <td id="city2Hour2Description">
+                            description
+                        </td>          
+                        
+                        <td id="city2Hour2Pressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp / Pressure-->
+                    <tr>            
+                        <td id="city2Hour2POP">
+                            POP
+                        </td>
+                        
+                    </tr><!--Desc / Wind-->
+                    <br/>
+                    <tr>            
+                        <td rowspan="3" >
+                            <img src="" id="city2Hour3Pic"/>
+                        </td>
+                        <td id="city2Hour3Time" class="time">
+                            Time
+                        </td>
+                    </tr><!--1. Pic / Time -->
+                    <tr>   
+                        <td id="city2Hour3Temp">
+                            Temp
+                        </td>         
+                        
+                    </tr><!--Pic / POP -->
+                    <tr>
+                        <td id="city2Hour3Wind">
+                            Wind
+                        </td>
+                    </tr>
+                    <tr> 
+                        <td id="city2Hour3Description">
+                            description
+                        </td>           
+                        
+                        <td id="city2Hour3Pressure">
+                            Pressure
+                        </td>
+                    </tr><!--Temp / Pressure-->
+                    <tr>            
+                        <td id="city2Hour3POP">
+                            POP
+                        </td>
+                        
+                    </tr><!--Desc / Wind-->
+                </table>
+            </div>
+        </div><!--end row 2  -->
+    </div><!--end mainContainer  -->
+    <!--  -->
+</body>
+</html>

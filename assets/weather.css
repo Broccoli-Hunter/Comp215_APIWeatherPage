@@ -1,0 +1,7 @@
+table .title, .time {
+    font-weight: bold;
+}
+
+.form-inline input{
+    width: auto;
+}
